@@ -1,0 +1,135 @@
+type Query {
+  battery(
+    """The ID of the object"""
+    id: ID!
+  ): BatteryNode
+  batteries(offset: Int, before: String, after: String, first: Int, last: Int): BatteryNodeConnection
+  batch(
+    """The ID of the object"""
+    id: ID!
+  ): BatchNode
+  batches(offset: Int, before: String, after: String, first: Int, last: Int): BatchNodeConnection
+  channel(
+    """The ID of the object"""
+    id: ID!
+  ): ChannelNode
+  channels(offset: Int, before: String, after: String, first: Int, last: Int): ChannelNodeConnection
+  reports(channels: [ID], start: Date, end: Date, passCapacity: Float): [ReportType]
+}
+
+type BatteryNode implements Node {
+  """The ID of the object"""
+  id: ID!
+  capacity: Float!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The ID of the object"""
+  id: ID!
+}
+
+type BatteryNodeConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [BatteryNodeEdge]!
+}
+
+"""
+The Relay compliant `PageInfo` type, containing data necessary to paginate this connection.
+"""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""A Relay edge containing a `BatteryNode` and its cursor."""
+type BatteryNodeEdge {
+  """The item at the end of the edge"""
+  node: BatteryNode
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type BatchNode implements Node {
+  """The ID of the object"""
+  id: ID!
+  date: Date!
+  batteries(offset: Int, before: String, after: String, first: Int, last: Int): BatteryNodeConnection
+}
+
+"""
+The `Date` scalar type represents a Date
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar Date
+
+type BatchNodeConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [BatchNodeEdge]!
+}
+
+"""A Relay edge containing a `BatchNode` and its cursor."""
+type BatchNodeEdge {
+  """The item at the end of the edge"""
+  node: BatchNode
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type ChannelNode implements Node {
+  """The ID of the object"""
+  id: ID!
+  name: String!
+  status: ChannelsChannelStatusChoices!
+  batches(offset: Int, before: String, after: String, first: Int, last: Int): BatchNodeConnection
+}
+
+"""An enumeration."""
+enum ChannelsChannelStatusChoices {
+  """running"""
+  R
+
+  """stopped"""
+  S
+}
+
+type ChannelNodeConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [ChannelNodeEdge]!
+}
+
+"""A Relay edge containing a `ChannelNode` and its cursor."""
+type ChannelNodeEdge {
+  """The item at the end of the edge"""
+  node: ChannelNode
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type ReportType {
+  channel: ChannelNode
+  batch: BatchNode
+  passRate: Float
+}
