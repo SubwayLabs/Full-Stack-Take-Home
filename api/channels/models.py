@@ -15,9 +15,20 @@ class Channel(models.Model):
 
     @classmethod
     def get_report(cls, channels: t.List[int], start: date, end: date, pass_capacity: float = .7):
+        """Generate a report of the pass rate for a list of channels
+
+        Args:
+            channels (t.List[int]): Channel IDs to get reports for
+            start (date): Start Date to get reports for
+            end (date): End Date to get reports for
+            pass_capacity (float, optional): Capacity to consider as a pass. Defaults to .7.
+
+        """
         results = []
         channels = cls.objects.filter(id__in=channels)
         for channel in channels:
+            # TODO: this is slow, we need to optimize this nested looping and
+            # database queries
             batches = Batch.objects.filter(channel=channel, date__gte=start, date__lte=end)
             for batch in batches:
                 batteries = Battery.objects.filter(batch=batch)

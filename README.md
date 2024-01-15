@@ -84,3 +84,10 @@ One of our engineers scaffolded out the project, but his is now on PTO and you n
   - Finally, the view should be able to be sharable, meaning if I copy the URL and send it to someone
   they will see exactly what I'm looking at, this includes the current sorting, pagination options,
   date range selected, and capacity pass
+
+## BONUS
+ - This is a full stack job, but front end leaning, so everything above is on the front end.
+ That being said, how about do some python and impress us? This is considered bonus, do so as you desire.
+  - The engineer that scaffolded out the app said the backend for the report is really bad right now.
+  He said something about it doing "N Queries" and that looping to count the passes is really slow
+  and naive. He linked [this method](https://github.com/SubwayLabs/Full-Stack-Take-Home/blob/main/api/channels/models.py#L17) and said if you could improve it while he's out it would be awesome. You should be able to change it to far less queries (maybe even just 1) and avoid looping over the batteries to compute the pass rate.
