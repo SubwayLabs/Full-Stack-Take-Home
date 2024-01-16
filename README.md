@@ -59,6 +59,7 @@ One of our engineers scaffolded out the project, but his is now on PTO and you n
   - The "View Report" button should only be activated if the user has selected 1 or more channels, via
     their checkbox. When the "View Report" button is clicked the user should be taken to a bulk report
     view for the selected channels
+ - The "View" links witin the table should only be visible when the user is hovering over that row.
 
 - The Bulk Report and Detail Views should be more or less identical, the only change
   being the channels that are represented in the view. The view is implemented with a table,
