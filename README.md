@@ -9,12 +9,13 @@ This is a fullstack app, powered by Django/Python on the backend and React on th
 To get started, you'll need [python installed](https://wiki.python.org/moin/BeginnersGuide/Download). We recommend making a virtual environment to keep dependencies organized. To do that, and install requirements you can do:
 ```shell
 python -m venv .venv
-source .venv/bin/acitave
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 You should then have all backend requirements installed and can generate some data and start the app by running:
 ```shell
+python api/manage.py migrate
 python api/manage.py populate
 python api/manage.py runserver
 ```
