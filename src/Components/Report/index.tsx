@@ -12,7 +12,7 @@ type Props = {
 
 
 export default function Report({channelIds}: Props){
-    const reports = useReports(channelIds, '2024-01-01', "2024-01-15", 0.9)
+    const reports = useReports(channelIds, '2025-05-01', "2025-05-31", 0.9)
     return (
         <Box sx={{py: 4}}>
             <Box sx={{display: 'flex', flexDirection: 'row'}}>
