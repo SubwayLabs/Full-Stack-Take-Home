@@ -1,37 +1,31 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  
-} from "react-router-dom";
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Main from './Main'
-import Channel from './Channel'
-import BulkChannel from './Channel/Bulk';
+import Channel from "./Channel";
+import BulkChannel from "./Channel/Bulk";
+import Main from "./Main";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Main />
-    ),
+    element: <Main />,
   },
   {
     path: "channel/:channelId",
     element: <Channel />,
   },
   {
-    path: 'bulk_report',
-    element: <BulkChannel />
-  }
+    path: "bulk_report",
+    element: <BulkChannel />,
+  },
 ]);
 
 function Home() {
   return (
     <div className="App">
-    <Box sx={{width: '80%', mx: 'auto'}}>
+      <Box sx={{ width: "80%", mx: "auto" }}>
         <RouterProvider router={router} />
-    </Box>
+      </Box>
     </div>
   );
 }

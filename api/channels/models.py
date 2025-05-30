@@ -13,7 +13,7 @@ class Channel(models.Model):
     name = models.CharField(max_length=100)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES)
 
-    @classmethod
+    @classmethod # this was refactored with help from chatgpt
     def get_report(cls, channels: t.List[int], start: date, end: date, pass_capacity: float = .7):
         """Generate a report of the pass rate for a list of channels
 
@@ -24,24 +24,24 @@ class Channel(models.Model):
             pass_capacity (float, optional): Capacity to consider as a pass. Defaults to .7.
 
         """
-        results = []
-        channels = cls.objects.filter(id__in=channels)
-        for channel in channels:
-            # TODO: this is slow, we need to optimize this nested looping and
-            # database queries
-            batches = Batch.objects.filter(channel=channel, date__gte=start, date__lte=end)
-            for batch in batches:
-                batteries = Battery.objects.filter(batch=batch)
-                count = len(batteries)
-                pass_count = 0
-                for battery in batteries:
-                    if battery.capacity >= pass_capacity:
-                        pass_count += 1
-                results.append(({
-                    "channel": channel,
-                    "batch": batch,
-                    "pass_rate": pass_count / count,
-                }))
+        batches = (
+            Batch.objects
+            .filter(channel_id__in=channels, date__range=(start, end))
+            .annotate(
+                total_batteries=models.Count("battery"),
+                passed_batteries=models.Count("battery", filter=models.Q(battery__capacity__gte=pass_capacity))
+            )
+            .select_related("channel")
+        )
+
+        results = [
+            {
+                "channel": batch.channel,
+                "batch": batch,
+                "pass_rate": batch.passed_batteries / batch.total_batteries if batch.total_batteries > 0 else 0,
+            }
+            for batch in batches
+        ]    
 
         return results
 
